@@ -14,7 +14,7 @@
 - [ ] Anti reversing
 - [ ] Delete himself
 - [ ] Cleanup everything
-- [ ] Merge all modules
+- [x] Merge all modules
 - [ ] Cross platform support
 
 ### Demo
