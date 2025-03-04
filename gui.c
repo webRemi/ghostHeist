@@ -129,7 +129,7 @@ void runGui() {
     );
 
     if (hwnd == NULL) {
-        printf("CreateWindow failed with error: 0x%x\n", GetLastError());
+        //printf("CreateWindow failed with error: 0x%x\n", GetLastError());
         return 1;
     }
 
