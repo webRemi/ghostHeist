@@ -1,4 +1,4 @@
-# ghostRansom Advanced
+# GhostHeist
 ## Ransomware simulation. Use at your own risk.
 ![Ransomware chrono start gui](/assets/images/gui_chrono_start.png)
 ![Ransomware chrono end gui](/assets/images/chrono_end.png)
