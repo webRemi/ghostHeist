@@ -13,7 +13,7 @@ Example
 ./ghostHeist.exe 'H:\\Financial datas\documents'
 ```
 > [!NOTE]
-Make sure to use '\\\' double backslash at root.
+Make sure to use ```\\``` double backslash at root.
 
 ### Features
 - [x] Gui with messages
