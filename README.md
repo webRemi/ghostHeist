@@ -12,7 +12,7 @@ Example
 ```powershell
 ./ghostHeist.exe 'H:\\Financial datas\documents'
 ```
-[!NOTE]
+> [!NOTE]
 Make sure to use '\\' double backslash at root.
 
 ### Features
